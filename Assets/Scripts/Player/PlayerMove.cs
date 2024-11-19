@@ -7,15 +7,7 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed;
     public float jumpForceY = 1.5f;
-
-    private PlayerRight playerRight;
-    private PlayerLeft playerLeft;
-    private FlipPlayerBody flipPlayerBody;
-    private PlayerFeet playerFeet;
-    private PlayerHead playerHead;
-    private PlayerAnimation playerAnimation;
-
-    private Rigidbody2D rb;
+    public float jumpForceX;
 
     private bool isJumping = false;
     private bool doubleJump = false;
@@ -24,20 +16,14 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
-        playerRight = GetComponentInChildren<PlayerRight>();
-        playerLeft = GetComponentInChildren<PlayerLeft>();
-        flipPlayerBody = GetComponentInChildren<FlipPlayerBody>();
-        playerAnimation = GetComponentInChildren<PlayerAnimation>();
-        playerFeet = GetComponentInChildren<PlayerFeet>();
-        playerHead = GetComponentInChildren<PlayerHead>();  
 
-        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
         Move();
         Jump();
+        WallSlide();
     }
 
     private void Move()
@@ -45,11 +31,11 @@ public class PlayerMove : MonoBehaviour
         float xInput = Input.GetAxis("Horizontal");
 
         // Verify if the player arrived the extremity
-        if (xInput > 0 && playerRight.RightLimit)
+        if (xInput > 0 && PlayerManager.playerRight.RightLimit)
         {
             xInput = 0;
         }
-        else if (xInput < 0 && playerLeft.LeftLimit)
+        else if (xInput < 0 && PlayerManager.playerLeft.LeftLimit)
         {
             xInput = 0;
         }
@@ -57,28 +43,28 @@ public class PlayerMove : MonoBehaviour
         // Verify wich side to look
         if (xInput > 0)
         {
-            flipPlayerBody.LookRight();
+            PlayerManager.flipPlayerBody.LookRight();
         }
         else if (xInput < 0)
         {
-            flipPlayerBody.LookLeft();
+            PlayerManager.flipPlayerBody.LookLeft();
         }
 
         //verify if player is on the ground
-        if (playerFeet.OnGround)
+        if (PlayerManager.playerFeet.OnGround)
         {
             if (xInput != 0)
             {
-                playerAnimation.PlayRun();
+                PlayerManager.playerAnimation.PlayRun();
             }
             else
             {
-                playerAnimation.PlayIdle();
+                PlayerManager.playerAnimation.PlayIdle();
             }
         }
         else
         {
-            playerAnimation.PlayFall();
+            PlayerManager.playerAnimation.PlayFall();
         }
 
         // Move Player
@@ -90,9 +76,9 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (playerFeet.OnGround) 
+            if (PlayerManager.playerFeet.OnGround) 
             {
-                playerAnimation.PlayJump();
+                PlayerManager.playerAnimation.PlayJump();
                 isJumping = true;
                 doubleJump = true;
                 ActivateJumpTime();
@@ -101,7 +87,7 @@ public class PlayerMove : MonoBehaviour
             {
                 if (doubleJump)
                 {
-                    playerAnimation.PlayDoubleJump();
+                    PlayerManager.playerAnimation.PlayDoubleJump();
                     isJumping = true;
                     doubleJump = false;
                     ActivateJumpTime();
@@ -111,17 +97,17 @@ public class PlayerMove : MonoBehaviour
 
         if(isJumping) 
         {
-            if (!playerHead.HeadLimit)
+            if (!PlayerManager.playerHead.HeadLimit)
             {
-                rb.velocity = Vector3.zero;
-                rb.gravityScale = 1;
-                Vector3 jumpDirection = new Vector3 (0, jumpForceY, 0);
+                PlayerManager.rigidbody2D.velocity = Vector3.zero;
+                PlayerManager.rigidbody2D.gravityScale = 1;
+                Vector3 jumpDirection = new Vector3 (jumpForceX, jumpForceY, 0);
                 transform.position += jumpDirection * speed * Time.deltaTime;
             }   
         }
         else
         {
-            rb.gravityScale = 4;
+            PlayerManager.rigidbody2D.gravityScale = 4;
         }
     }
 
@@ -138,6 +124,25 @@ public class PlayerMove : MonoBehaviour
     private IEnumerator JumpTime()
     {
         yield return new WaitForSeconds(0.3f);
+        jumpForceX = 0;
         isJumping = false;
+    }
+
+    void WallSlide()
+    {
+        if(!PlayerManager.playerFeet.OnGround && (PlayerManager.playerRight.RightLimit || PlayerManager.playerLeft.LeftLimit))
+        {
+            PlayerManager.playerAnimation.PlayWallSlide();
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumpForceX = PlayerManager.flipPlayerBody.LeftOrRight == true ? jumpForceY : jumpForceY * -1;
+
+                isJumping = true;
+                doubleJump = true;
+                PlayerManager.playerAnimation.PlayJump();
+                ActivateJumpTime();
+            }
+        }
     }
 }

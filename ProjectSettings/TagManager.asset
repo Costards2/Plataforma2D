@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - Wall
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - PickUps
+  - PlantProjectile
+  - Enemy
+  - Player
   - 
   - 
   - 

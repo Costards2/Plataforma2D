@@ -18,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("run", false);
         animator.SetBool("fall", false);
         animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
     }
 
     public void PlayRun()
@@ -26,6 +27,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("run", true);
         animator.SetBool("fall", false);
         animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
     }
 
     public void PlayFall()
@@ -34,6 +36,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("run", false);
         animator.SetBool("fall", true);
         animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
     }
 
     public void PlayJump()
@@ -42,6 +45,7 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("run", false);
         animator.SetBool("fall", false);
         animator.SetBool("jump", true);
+        animator.SetBool("wallSlide", false);
     }
 
     public void PlayDoubleJump()
@@ -50,7 +54,43 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("run", false);
         animator.SetBool("fall", false);
         animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
 
         animator.SetTrigger("doubleJump");
+    }
+
+    public void PlayWallSlide()
+    {
+        animator.SetBool("idle", false);
+        animator.SetBool("run", false);
+        animator.SetBool("fall", false);
+        animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", true);
+    }
+
+    public void PlayDamage()
+    {
+        // ******** Not necessary ************* 
+        animator.SetBool("idle", false);
+        animator.SetBool("run", false);
+        animator.SetBool("fall", false);
+        animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
+        // ************************************
+
+        animator.SetTrigger("damage");
+    }
+
+    public void PlayDeath()
+    {
+        // ******** Not necessary ************* 
+        animator.SetBool("idle", false);
+        animator.SetBool("run", false);
+        animator.SetBool("fall", false);
+        animator.SetBool("jump", false);
+        animator.SetBool("wallSlide", false);
+        // ************************************
+
+        animator.SetTrigger("death");
     }
 }
