@@ -16,6 +16,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerDamage playerDamage;
     public static Rigidbody2D rigidbody2D;
 
+    public bool enableMovement = true; 
+
 
     private void Awake()
     {
@@ -42,6 +44,27 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        enableMovement = false;
+    }
+
+    public void EnableMove()
+    {
+        enableMovement = true;
+    }
+
+    public void DisableMove()
+    {
+        enableMovement = false;
+    }
+
+    public void RemovePhysics()
+    {
+        ResetPhysicsVelociy();
+        rigidbody2D.simulated = false;
+    }
+
     public void ResetPhysicsVelociy()
     {
         rigidbody2D.velocity = Vector3.zero;
@@ -50,5 +73,12 @@ public class PlayerManager : MonoBehaviour
     public void ThrowPlayer(int x, int y)
     {
         rigidbody2D.AddForce(new Vector2(x, y));
+    }
+
+    public void FreezePlayer()
+    {
+        DisableMove();
+        ResetPhysicsVelociy();
+        playerAnimation.PlayIdle();
     }
 }

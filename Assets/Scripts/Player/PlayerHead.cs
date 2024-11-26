@@ -16,6 +16,7 @@ public class PlayerHead : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             headLimit = true;
+            PlayerManager.playerMove.CancelJump();
         }
     }
 

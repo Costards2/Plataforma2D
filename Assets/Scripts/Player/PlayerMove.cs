@@ -7,20 +7,18 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed;
     public float jumpForceY = 1.5f;
-    public float jumpForceX;
+    public float jumpForceX = 0f;
 
     private bool isJumping = false;
     private bool doubleJump = false;
 
+    private bool enableJump = false;
+
     private Coroutine jumpCoroutine;
-
-    void Start()
-    {
-
-    }
 
     void Update()
     {
+        if(PlayerManager.instance.enableMovement == false) return;
         Move();
         Jump();
         WallSlide();
@@ -76,9 +74,10 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (PlayerManager.playerFeet.OnGround) 
+            if (enableJump) 
             {
                 PlayerManager.playerAnimation.PlayJump();
+                enableJump = false;
                 isJumping = true;
                 doubleJump = true;
                 ActivateJumpTime();
@@ -121,6 +120,21 @@ public class PlayerMove : MonoBehaviour
         jumpCoroutine = StartCoroutine(JumpTime());
     }
 
+    public void EnableJump()
+    {
+        enableJump = true;
+    }
+
+    public void CancelJump()
+    {
+        if (jumpCoroutine != null)
+        {
+            StopCoroutine (jumpCoroutine);
+        }
+        jumpForceX = 0;
+        isJumping = false;
+    }
+
     private IEnumerator JumpTime()
     {
         yield return new WaitForSeconds(0.3f);
@@ -128,9 +142,10 @@ public class PlayerMove : MonoBehaviour
         isJumping = false;
     }
 
+    //This is also the Wall Jump
     void WallSlide()
     {
-        if(!PlayerManager.playerFeet.OnGround && (PlayerManager.playerRight.RightLimit || PlayerManager.playerLeft.LeftLimit))
+        if(!PlayerManager.playerFeet.OnGround && PlayerManager.playerHead.HeadLimit == false && (PlayerManager.playerRight.RightLimit || PlayerManager.playerLeft.LeftLimit))
         {
             PlayerManager.playerAnimation.PlayWallSlide();
 

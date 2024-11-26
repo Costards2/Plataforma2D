@@ -11,11 +11,17 @@ public class CanvasManager : MonoBehaviour
 
     public Image healthBar;
     public TextMeshProUGUI collectedItems;
-    public TextMeshProUGUI time;
+    public TextMeshProUGUI timerTxt;
 
     public Sprite[] spritesHealthBar;
 
     private int life;
+    public bool playerDied = false;
+
+    public int totalCollectedItems = 0;
+
+    public float timer;
+    public bool timerEnd;
 
     void Awake()
     {
@@ -33,11 +39,15 @@ public class CanvasManager : MonoBehaviour
     void Start()
     {
         life = spritesHealthBar.Length - 1;
+        //collectedItems.text = collectedItems.ToString();
+        timerTxt.text = ((int)timer).ToString();
+
+        timerEnd = false;
     }
 
-    void Update()
+    private void Update()
     {
-        
+        CountTime();
     }
 
     public void DecrementPlayerLife()
@@ -58,7 +68,10 @@ public class CanvasManager : MonoBehaviour
     {
         life = 0;
         healthBar.sprite = spritesHealthBar[life];
+        
         PlayerManager.playerAnimation.PlayDeath();
+        PlayerManager.instance.DisableMove();
+        PlayerManager.instance.RemovePhysics();
 
         StartCoroutine(ResetScene());
     }
@@ -72,5 +85,35 @@ public class CanvasManager : MonoBehaviour
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void AddCollectedItem()
+    {
+        totalCollectedItems++;
+        collectedItems.text = totalCollectedItems.ToString(); //
+    }
+
+    public void CountTime()
+    {
+        if (timerEnd) return;
+       
+        timer -= Time.deltaTime;
+
+        if (timer < 0) 
+        { 
+            timerEnd = true;
+            life = 0;  
+            DecrementPlayerLife();
+        }
+        else
+        {
+            timerTxt.text =  ((int)timer).ToString();
+        }
+    }
+
+    public void EndGame()
+    {
+        timerEnd = true;
+        PlayerManager.instance.FreezePlayer();
     }
 }

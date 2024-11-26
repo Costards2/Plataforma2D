@@ -93,4 +93,9 @@ public class PlayerAnimation : MonoBehaviour
 
         animator.SetTrigger("death");
     }
+
+    public void EnableMove()
+    {
+        PlayerManager.instance.EnableMove();
+    }
 }

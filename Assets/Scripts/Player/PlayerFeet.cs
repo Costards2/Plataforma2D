@@ -11,6 +11,14 @@ public class PlayerFeet : MonoBehaviour
         get { return onGround; }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            PlayerManager.playerMove.EnableJump();
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 6)
