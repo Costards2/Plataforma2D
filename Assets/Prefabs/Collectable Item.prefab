@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7444306459326522159}
   - component: {fileID: 2951170568069185106}
   - component: {fileID: 8746125219932076628}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collectable Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3628630186017408936}
   - component: {fileID: 589355038405405856}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 'Body '
   m_TagString: Untagged
   m_Icon: {fileID: 0}

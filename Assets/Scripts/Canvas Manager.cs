@@ -10,7 +10,7 @@ public class CanvasManager : MonoBehaviour
     public static CanvasManager instance;
 
     public Image healthBar;
-    public TextMeshProUGUI collectedItems;
+    public TextMeshProUGUI collectedItemsTxt;
     public TextMeshProUGUI timerTxt;
 
     public Sprite[] spritesHealthBar;
@@ -22,6 +22,9 @@ public class CanvasManager : MonoBehaviour
 
     public float timer;
     public bool timerEnd;
+
+    public GameObject endGamePanel;
+    public TextMeshProUGUI totalFruitsEndGameTxt;
 
     void Awake()
     {
@@ -43,6 +46,8 @@ public class CanvasManager : MonoBehaviour
         timerTxt.text = ((int)timer).ToString();
 
         timerEnd = false;
+
+        endGamePanel.SetActive(false);
     }
 
     private void Update()
@@ -90,7 +95,7 @@ public class CanvasManager : MonoBehaviour
     public void AddCollectedItem()
     {
         totalCollectedItems++;
-        collectedItems.text = totalCollectedItems.ToString(); //
+        collectedItemsTxt.text = $"X{totalCollectedItems}"; //
     }
 
     public void CountTime()
@@ -115,5 +120,24 @@ public class CanvasManager : MonoBehaviour
     {
         timerEnd = true;
         PlayerManager.instance.FreezePlayer();
+        StartCoroutine(ShowTheFinalLevelPanel());
+    }
+
+    IEnumerator ShowTheFinalLevelPanel()
+    {
+        yield return new WaitForSeconds(3f);
+        endGamePanel.SetActive(true);
+        int count = 0;
+        while(count < totalCollectedItems)
+        {
+            count++; ;
+            totalFruitsEndGameTxt.text = $"X{count}";
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    public void RestartLevelUI()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

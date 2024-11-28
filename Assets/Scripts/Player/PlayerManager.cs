@@ -81,4 +81,12 @@ public class PlayerManager : MonoBehaviour
         ResetPhysicsVelociy();
         playerAnimation.PlayIdle();
     }
+
+    public void ExpelPlayer()
+    {
+        var sortedNumer = new System.Random().Next(0,2);
+        int strengthX = sortedNumer == 0 ? -1000 : 1000;
+        ResetPhysicsVelociy();
+        ThrowPlayer(strengthX, 1000);
+    }
 }
