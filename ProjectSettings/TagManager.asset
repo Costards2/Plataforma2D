@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PlayerFeet
+  - PePlayer
   layers:
   - Default
   - TransparentFX
@@ -12,10 +12,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
-  - PickUps
-  - PlantProjectile
-  - Enemy
+  - Chao
+  - Coletavel
+  - ProjetilPlanta
+  - Inimigo
   - Player
   - 
   - 
@@ -42,12 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 398050585
+  - name: PlanoDeFundo
+    uniqueID: 3703408185
     locked: 0
-  - name: 'Elements '
-    uniqueID: 1354735969
+  - name: Elementos
+    uniqueID: 3732480649
     locked: 0
   - name: Player
-    uniqueID: 1314206609
+    uniqueID: 1990616263
     locked: 0
