@@ -28,7 +28,12 @@ public class CanvasGameMng : MonoBehaviour
     public float tempoDoJogo;
     public bool fimDoTempo;
     public GameObject painelFimDoJogo;
-    public TextMeshProUGUI txtTotalFrutasFimDoJogo; 
+    public TextMeshProUGUI txtTotalFrutasFimDoJogo;
+    public Image imgMedalhaLevel;
+    public Sprite[] sptsMedalhas;
+    private int idLevel;
+    private int idMedalhaLevel;
+    private double qtdItemscoletaveis;
 
 
     // Start is called before the first frame update
@@ -39,11 +44,19 @@ public class CanvasGameMng : MonoBehaviour
         txtTempoDeJogo.text = ((int)tempoDoJogo).ToString();
         fimDoTempo = false;
         painelFimDoJogo.SetActive(false);
+        idLevel = SceneManager.GetActiveScene().buildIndex;
+        qtdItemscoletaveis = FindObjectsOfType<ItemColetavel>().Length;
+        CanvasLoadingMng.instance.OcultarPainelLoading();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            VoltarParaMenu();
+        }
+
         ContarTempo();
     }
 
@@ -72,10 +85,6 @@ public class CanvasGameMng : MonoBehaviour
         ReiniciarLevelAtual();
     }
 
-    public void ReiniciarLevelAtual(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
     public void IncrementarItemColetavel(){
         totalItensColetados++;
         txtTotalItensColetados.text = $"x{totalItensColetados}";
@@ -98,9 +107,40 @@ public class CanvasGameMng : MonoBehaviour
     public void FimDoJogo(){
         fimDoTempo = true;
         PlayerMng.Instance.CongelarPlayer();//Congelar o player
-        //Salvar os dados do level 
+        SalvarDadosDoLevel();
         StartCoroutine(ExibirTelaFinalDoLevel());//Exibir uma tela final depois de um tempo
     }
+
+    private void SalvarDadosDoLevel()
+    {
+        int itensSalvosDoLevel = DBMng.BuscarQtdFrutasLevel(idLevel);
+
+        DefinirMedalhaDoLevel();
+
+        if(totalItensColetados > itensSalvosDoLevel)
+        {
+            DBMng.SalvarDadosLevel(idLevel, totalItensColetados, idMedalhaLevel);
+        }
+    }
+
+    private void DefinirMedalhaDoLevel()
+    {
+        double porcentagem = ((double)totalItensColetados / qtdItemscoletaveis) * 100;
+
+        if (porcentagem < 50)
+        {
+            idMedalhaLevel = 1;
+        }
+        else if (porcentagem < 100 && porcentagem >= 50)
+        {
+            idMedalhaLevel = 2;
+        }
+        else
+        {
+            idMedalhaLevel = 3;
+        }
+    }
+
 
     IEnumerator ExibirTelaFinalDoLevel(){
         yield return new WaitForSeconds(3f);
@@ -116,5 +156,23 @@ public class CanvasGameMng : MonoBehaviour
     public void ReiniciarLevelPelaTela(){
         //Carregar tela de loading
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReiniciarLevelAtual()
+    {
+        CanvasLoadingMng.instance.ExibirPainelLoading();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void VoltarParaMenu()
+    {
+        CanvasLoadingMng.instance.ExibirPainelLoading();
+        SceneManager.LoadScene(0);
+    }
+
+    public void ProximoLevel()
+    {
+        CanvasLoadingMng.instance.ExibirPainelLoading();
+        SceneManager.LoadScene(idLevel + 1);
     }
 }
