@@ -28,12 +28,12 @@ public class CanvasGameMng : MonoBehaviour
     public float tempoDoJogo;
     public bool fimDoTempo;
     public GameObject painelFimDoJogo;
-    public TextMeshProUGUI txtTotalFrutasFimDoJogo;
-    public Image imgMedalhaLevel;
+    public TextMeshProUGUI txtTotalFrutasFimDoJogo; 
+    public Image imgMedalhaDoLevel;
     public Sprite[] sptsMedalhas;
     private int idLevel;
     private int idMedalhaLevel;
-    private double qtdItemscoletaveis;
+    private double qtdItensColetaveis;
 
 
     // Start is called before the first frame update
@@ -45,18 +45,16 @@ public class CanvasGameMng : MonoBehaviour
         fimDoTempo = false;
         painelFimDoJogo.SetActive(false);
         idLevel = SceneManager.GetActiveScene().buildIndex;
-        qtdItemscoletaveis = FindObjectsOfType<ItemColetavel>().Length;
-        CanvasLoadingMng.instance.OcultarPainelLoading();
+        qtdItensColetaveis = FindObjectsOfType<ItemColetavel>().Length;
+        CanvasLoadingMng.Instance.OcultarPainelLoading();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if(Input.GetKeyDown(KeyCode.Escape)){
             VoltarParaMenu();
         }
-
         ContarTempo();
     }
 
@@ -85,6 +83,8 @@ public class CanvasGameMng : MonoBehaviour
         ReiniciarLevelAtual();
     }
 
+    
+
     public void IncrementarItemColetavel(){
         totalItensColetados++;
         txtTotalItensColetados.text = $"x{totalItensColetados}";
@@ -111,36 +111,27 @@ public class CanvasGameMng : MonoBehaviour
         StartCoroutine(ExibirTelaFinalDoLevel());//Exibir uma tela final depois de um tempo
     }
 
-    private void SalvarDadosDoLevel()
-    {
+    private void SalvarDadosDoLevel(){
         int itensSalvosDoLevel = DBMng.BuscarQtdFrutasLevel(idLevel);
-
         DefinirMedalhaDoLevel();
-
-        if(totalItensColetados > itensSalvosDoLevel)
-        {
-            DBMng.SalvarDadosLevel(idLevel, totalItensColetados, idMedalhaLevel);
+        if(totalItensColetados > itensSalvosDoLevel){
+            DBMng.SalvarDadosLevel(idLevel,totalItensColetados,idMedalhaLevel);
         }
     }
-
-    private void DefinirMedalhaDoLevel()
-    {
-        double porcentagem = ((double)totalItensColetados / qtdItemscoletaveis) * 100;
-
-        if (porcentagem < 50)
-        {
+    private void DefinirMedalhaDoLevel(){
+        //Todas as frutas que eu coletei e vou dividir pelo total de frutas na fase
+        double porcentagem = ((double)totalItensColetados/qtdItensColetaveis) * 100;
+        if(porcentagem < 50){
             idMedalhaLevel = 1;
         }
-        else if (porcentagem < 100 && porcentagem >= 50)
-        {
+        else if(porcentagem >=50 && porcentagem < 100){
             idMedalhaLevel = 2;
         }
-        else
-        {
+        else{
             idMedalhaLevel = 3;
         }
+        imgMedalhaDoLevel.sprite = sptsMedalhas[idMedalhaLevel];
     }
-
 
     IEnumerator ExibirTelaFinalDoLevel(){
         yield return new WaitForSeconds(3f);
@@ -154,25 +145,20 @@ public class CanvasGameMng : MonoBehaviour
     }
 
     public void ReiniciarLevelPelaTela(){
-        //Carregar tela de loading
+        CanvasLoadingMng.Instance.ExibirPainelLoading();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void ReiniciarLevelAtual(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void ReiniciarLevelAtual()
-    {
-        CanvasLoadingMng.instance.ExibirPainelLoading();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void VoltarParaMenu()
-    {
-        CanvasLoadingMng.instance.ExibirPainelLoading();
+    public void VoltarParaMenu(){
+        CanvasLoadingMng.Instance.ExibirPainelLoading();
         SceneManager.LoadScene(0);
     }
 
-    public void ProximoLevel()
-    {
-        CanvasLoadingMng.instance.ExibirPainelLoading();
-        SceneManager.LoadScene(idLevel + 1);
-    }
+    public void ProximoLevel(){
+        CanvasLoadingMng.Instance.ExibirPainelLoading();
+        SceneManager.LoadScene(idLevel+1);
+    }    
 }

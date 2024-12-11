@@ -4,36 +4,24 @@ using UnityEngine;
 
 public class CanvasLoadingMng : MonoBehaviour
 {
-    public static CanvasLoadingMng instance; //{ get; private set; }
+    public static CanvasLoadingMng Instance;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (instance == null)
-        {
-            instance = this;
+    void Awake(){
+        if(Instance == null){
+            Instance = this;
             DontDestroyOnLoad(gameObject);
             return;
         }
-
         Destroy(gameObject);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public GameObject pnlLoading;
 
-    public void ExibirPainelLoading()
-    {
+    public void ExibirPainelLoading(){
         pnlLoading.SetActive(true);
     }
 
-    public void OcultarPainelLoading()
-    {
+    public void OcultarPainelLoading(){
         pnlLoading.SetActive(false);
     }
 }

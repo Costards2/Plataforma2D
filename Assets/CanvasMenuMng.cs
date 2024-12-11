@@ -7,74 +7,64 @@ using UnityEngine.UI;
 
 public class CanvasMenuMng : MonoBehaviour
 {
-    public static CanvasMenuMng instance;
+    public static CanvasMenuMng Instance;
 
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
+    void Awake(){
+        if(Instance == null){
+            Instance = this;
             return;
         }
         Destroy(gameObject);
     }
 
-    public TextMeshProUGUI[] txtItemsColetadosPorNiveis;
+    public TextMeshProUGUI[] txtItensColetadosPorNiveis;
     public GameObject[] cadeados;
-    public GameObject[] qtdItemLevel;
+    public GameObject[] qtdsItemLevel;
     public GameObject[] medalhas;
     public Sprite[] sptsMedalhas;
-
     // Start is called before the first frame update
     void Start()
     {
         ConfigurarPainelNivel();
-        CanvasLoadingMng.instance.OcultarPainelLoading();
+        CanvasLoadingMng.Instance.OcultarPainelLoading();
     }
 
-    private void ConfigurarPainelNivel()
-    {
-        // Configurar txt das frutas
-        for (int i = 1; i < txtItemsColetadosPorNiveis.Length; i++) 
-        {
-            txtItemsColetadosPorNiveis[i].text = "X" +DBMng.BuscarQtdFrutasLevel(i).ToString();
+    private void ConfigurarPainelNivel(){
+        //Configurar os textos com quantidade de frutas
+        for(int i = 1; i < txtItensColetadosPorNiveis.Length;i++){
+            txtItensColetadosPorNiveis[i].text = "x" + DBMng.BuscarQtdFrutasLevel(i).ToString();
         }
 
-        // Configurar os cadeados e Items level
-        for (int i = 2; i < cadeados.Length; i++)
-        {
+        //Configurar os cadeados e as qts de itens do level
+        for(int i = 2; i < cadeados.Length;i++){
             bool estaHabilitado = DBMng.BuscarLevelHabilitado(i) == 1 ? true : false;
             cadeados[i].SetActive(!estaHabilitado);
-
-            qtdItemLevel[i].SetActive(estaHabilitado);
+            qtdsItemLevel[i].SetActive(estaHabilitado);
         }
 
-        // Configurar as medalhas do level
-        for (int i = 1; i < medalhas.Length; i++)
-        {
-            int medalhaLvl = DBMng.BuscarMedalhaLevel(i);
-            if (medalhaLvl == 0)
-            {
+        //Configurar as medalhas do level
+        for(int i = 1; i < medalhas.Length;i++){
+            int medalhaDoLevel = DBMng.BuscarMedalhaLevel(i);
+            if(medalhaDoLevel == 0){
                 medalhas[i].SetActive(false);
             }
-            else
-            {
-                medalhas[i].GetComponent<Image>().sprite = sptsMedalhas[medalhaLvl];
+            else{
+                medalhas[i].GetComponent<Image>().sprite = sptsMedalhas[medalhaDoLevel];
             }
         }
     }
 
-    public void IniciarLevel1()
-    {
-        CanvasLoadingMng.instance.ExibirPainelLoading();
+    //Level 1 terá um método aparte para iniciar a fase
+    public void IniciarLevel1(){
+        CanvasLoadingMng.Instance.ExibirPainelLoading();
         SceneManager.LoadScene(1);
     }
 
-    public void IniciarLevel(int idLevel)
-    {
-        if (cadeados[idLevel].activeSelf == false)
-        {
-            CanvasLoadingMng.instance.ExibirPainelLoading();
+    //Carregar os demais leveis do jogo
+    public void IniciarLevel(int idLevel){
+        //Só deve funcionar se o cadeado estiver oculto
+        if(cadeados[idLevel].activeSelf == false){
+            CanvasLoadingMng.Instance.ExibirPainelLoading();
             SceneManager.LoadScene(idLevel);
         }
     }
