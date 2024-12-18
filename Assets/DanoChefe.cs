@@ -12,20 +12,16 @@ public class DanoChefe : MonoBehaviour
         chefeMng = GetComponentInParent<ChefeMng>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "PePlayer" && houveColisao == false)
-        {
+    private void OnTriggerEnter2D(Collider2D colisao){
+        if(colisao.gameObject.tag == "PePlayer" && houveColisao == false){
             houveColisao = true;
             PlayerMng.Instance.ExpelirPlayer();
-            chefeMng.DecrementaVidaChefe();
-            StartCoroutine(PermitirColisao());
+            chefeMng.DecrementarVidaChefe();
+            Invoke("PermitirColisao",0.3f);
         }
     }
 
-    private IEnumerator PermitirColisao()
-    {
-        yield return new WaitForSeconds(0.3f);
+    private void PermitirColisao(){
         houveColisao = false;
     }
 }

@@ -32,6 +32,23 @@ public static class DBMng
         return PlayerPrefs.GetInt(MEDALHA_LEVEL+idLevel);
     }
 
-    //Salvar volumes
-    //Obter volumes
+    public static void SalvarVolume(float volumeVFX, float volumeMusica){
+        Volume volume = new Volume();
+        volume.vfx = volumeVFX;
+        volume.musica = volumeMusica;
+        var json = JsonUtility.ToJson(volume);
+        Debug.Log(json);
+        PlayerPrefs.SetString(VOLUME,json);
+    }
+    
+    public static Volume ObterVolumes(){
+        var json = PlayerPrefs.GetString(VOLUME);
+        Volume volume = JsonUtility.FromJson<Volume>(json);
+        if(volume == null){
+            SalvarVolume(1,1);
+            json = PlayerPrefs.GetString(VOLUME);
+            volume = JsonUtility.FromJson<Volume>(json);
+        }
+        return volume;
+    }
 }

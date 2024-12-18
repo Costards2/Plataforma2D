@@ -22,11 +22,27 @@ public class CanvasMenuMng : MonoBehaviour
     public GameObject[] qtdsItemLevel;
     public GameObject[] medalhas;
     public Sprite[] sptsMedalhas;
+
+    public GameObject[] paineis;
+
+    public Slider sldVFX;
+    public Slider sldMusica;
+
+    private Volume volume;
     // Start is called before the first frame update
     void Start()
     {
         ConfigurarPainelNivel();
+        ConfigurarPainelConfiguracoes();
+        AudioMng.Instance.PlayAudioMenu();
         CanvasLoadingMng.Instance.OcultarPainelLoading();
+    }
+
+    private void ConfigurarPainelConfiguracoes(){
+        volume = DBMng.ObterVolumes();
+        sldVFX.value = volume.vfx;
+        sldMusica.value = volume.musica;
+        AudioMng.Instance.MudarVolume(volume);
     }
 
     private void ConfigurarPainelNivel(){
@@ -56,6 +72,7 @@ public class CanvasMenuMng : MonoBehaviour
 
     //Level 1 terá um método aparte para iniciar a fase
     public void IniciarLevel1(){
+        AudioMng.Instance.PlayAudioClick();
         CanvasLoadingMng.Instance.ExibirPainelLoading();
         SceneManager.LoadScene(1);
     }
@@ -64,8 +81,36 @@ public class CanvasMenuMng : MonoBehaviour
     public void IniciarLevel(int idLevel){
         //Só deve funcionar se o cadeado estiver oculto
         if(cadeados[idLevel].activeSelf == false){
+            AudioMng.Instance.PlayAudioClick();
             CanvasLoadingMng.Instance.ExibirPainelLoading();
             SceneManager.LoadScene(idLevel);
         }
+    }
+
+    public void ExibirPainel(int id){
+        AudioMng.Instance.PlayAudioClick();
+        foreach(var painel in paineis){
+            painel.SetActive(false);
+        }
+        paineis[id].SetActive(true);
+    }
+
+    public void FecharJogo(){
+        Application.Quit();
+    }
+
+    public void MudarVolumeVFX(){
+        DBMng.SalvarVolume(sldVFX.value, volume.musica);
+        AtualizarVolumes();
+    }
+
+    public void MudarVolumeMusica(){
+        DBMng.SalvarVolume(volume.vfx, sldMusica.value);
+        AtualizarVolumes();
+    }
+
+    public void AtualizarVolumes(){
+        volume = DBMng.ObterVolumes();
+        AudioMng.Instance.MudarVolume(volume);
     }
 }
