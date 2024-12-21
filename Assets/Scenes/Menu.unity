@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 0.307, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3785,7 +3785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: by Rodolfo Moraes
+  m_text: by Pedro Costard
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3c2ca652af29e92449ac1bcc80f91bbb, type: 2}
   m_sharedMaterial: {fileID: 1242864153858097941, guid: 3c2ca652af29e92449ac1bcc80f91bbb, type: 2}
@@ -4351,11 +4351,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Jogo desenvolvido pelos alunos do curso de desenvolvimento de games oferecido
-    pela Salvador Tech/Unifel.
+  m_text: 'Jogo desenvolvido durante o curso de desenvolvimento de games oferecido
+    pela Salvador Tech/Unifel em conjunto com o Prof. Rodolfo Moraes.
 
 
-    Obrigador por Jogar!'
+    Obrigador
+    por Jogar!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3c2ca652af29e92449ac1bcc80f91bbb, type: 2}
   m_sharedMaterial: {fileID: 1242864153858097941, guid: 3c2ca652af29e92449ac1bcc80f91bbb, type: 2}
