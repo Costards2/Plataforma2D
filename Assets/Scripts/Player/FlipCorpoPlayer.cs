@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlipCorpoPlayer : MonoBehaviour
@@ -9,7 +7,7 @@ public class FlipCorpoPlayer : MonoBehaviour
     public bool VisaoEsquerdaOuDireita {
         get {return spriteCorpo.flipX;}
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         spriteCorpo = GetComponent<SpriteRenderer>();

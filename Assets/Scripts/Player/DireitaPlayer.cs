@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-//Verificar se o player atingiu o limite da direita ao se movimentar
 public class DireitaPlayer : MonoBehaviour
 {
     private bool limiteDireita;

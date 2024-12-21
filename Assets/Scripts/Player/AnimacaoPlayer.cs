@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimacaoPlayer : MonoBehaviour
 {
     private Animator animator;
-    // Start is called before the first frame update
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -70,5 +68,9 @@ public class AnimacaoPlayer : MonoBehaviour
 
     public void HabilitaMovimentacao(){
         PlayerMng.Instance.HabilitarMovimentacao();
+    }
+
+    public void PlayAudioMovimentacao(){
+        AudioMng.Instance.PlayAudioCorrer();
     }
 }
