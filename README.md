@@ -7,6 +7,8 @@ Nele você controla o protagonista Virtual Guy, o jogo é ambientado num mundo 2
 
 Colete itens no tempo determinado, e vença o chefe final.
 
+Unity: 2022.3.46f
+
 # Tutorial
 As teclas AD movem o personagem.
 
