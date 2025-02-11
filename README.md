@@ -3,7 +3,7 @@
 # Sobre
 Esse foi um jogo de Plataforma2D  desenvolvido no curso de games oferecido pela Salvador Tech/Unifel, em conjunto com o professor Rodolfo Moraes.
 
-Nele você controla o protagonista Virtual Guy, o jogo é ambientado num mundo 2D onde o jogador deve enfrentar desafios e derrotar inimigos . 
+Nele você controla o protagonista Virtual Guy, o jogo é ambientado num mundo 2D onde o jogador deve enfrentar desafios e derrotar inimigos. 
 
 Colete itens no tempo determinado, e vença o chefe final.
 
