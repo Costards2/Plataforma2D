@@ -23,4 +23,4 @@ Link Para o Jogo: https://costards2.itch.io/virtual-guy-adventure
 
 2 - Extraia o arquivo.
 
-3 -Execute o arquivo "Virtual Guy Adventure.exe" .
+3 -Execute o arquivo.
